@@ -51,7 +51,7 @@
                                 <td>{!! $item->religion  !!}</td>
                                 <td>{!! $item->full_address  !!}</td>
                                 <td>{!! \Carbon\Carbon::parse($item->issue_date)->format('d/m/Y')  !!}</td>
-                                <td>{!! \Carbon\Carbon::parse($item->expired_date)->format('d/m/Y')  !!}</td>
+                                <td>{!! \Carbon\Carbon::parse($item->expire_date)->format('d/m/Y')  !!}</td>
                                 <td>
 
                                     <div class="dropdown">

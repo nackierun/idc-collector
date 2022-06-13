@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', App\Http\Livewire\IdCard\Index::class)->name('idc.index');
 Route::get('/idc/create', App\Http\Livewire\IdCard\create::class)->name('idc.create');
-Route::get('/idc/edit/{item}', App\Http\Livewire\IdCard\edit::class)->name('idc.edit');
+Route::get('/idc/edit/{id}', App\Http\Livewire\IdCard\edit::class)->name('idc.edit');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
