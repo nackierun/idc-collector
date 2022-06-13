@@ -53,7 +53,7 @@
                                 <td>{!! \Carbon\Carbon::parse($item->issue_date)->format('d/m/Y')  !!}</td>
                                 <td>{!! \Carbon\Carbon::parse($item->expired_date)->format('d/m/Y')  !!}</td>
                                 <td>
-                                    
+
                                     <div class="dropdown">
                                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
                                            id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
