@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class IdCard extends Model
 {
@@ -66,5 +67,14 @@ class IdCard extends Model
 
         return '';
 
+    }
+
+    public function getPictureAttribute()
+    {
+        if (!empty($this->attributes['photo']) && Storage::disk('avatars')->exists($this->attributes['photo'])) {
+            return base64_encode(Storage::disk('avatars')->get($this->attributes['photo']));
+        }
+
+        return false;
     }
 }

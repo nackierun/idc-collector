@@ -5,9 +5,13 @@ namespace App\Http\Livewire\IdCard;
 use App\Models\IdCard;
 use App\View\Components\DefaultLayout;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
+    use WithFileUploads;
+
+    public $photo;
     public $idc_number;
     public $th_title_name;
     public $en_title_name;
@@ -23,8 +27,9 @@ class Create extends Component
     public $province;
     public $issue_date;
     public $expire_date;
-
+//|dimensions:ratio=1/1
     protected $rules = [
+        'photo' => 'required|image|max:2048',
         'idc_number' => 'required|numeric|digits_between :13,13|unique:App\Models\IdCard,idc_number',
         'th_title_name' => 'required',
         'th_first_name' => 'required',
@@ -64,6 +69,10 @@ class Create extends Component
         'issue_date.date_format' => 'วันที่ไม่ถูกต้อง',
         'expire_date.required' => 'กรุณากรอก วันบัตรหมดอายุ',
         'expire_date.date_format' => 'วันที่ไม่ถูกต้อง',
+        'photo.required' => 'กรุณาอัปโหลดรูปประจำตัว',
+//        'photo.dimensions' => 'อัตราส่วน 1/1 เท่านั้น',
+        'photo.image' => 'อัปโหลดไฟล์รูปเท่านั้น',
+        'photo.max' => 'ขนาดไฟล์ไม่เกิน 2MB',
     ];
 
 //    protected $validationAttributes = [
@@ -83,6 +92,13 @@ class Create extends Component
     public function submit()
     {
         $validatedData = $this->validate();
+//        $file = base64_encode(file_get_contents($this->photo->getRealPath()));
+        $path = $this->photo->storeAs(
+            '',
+            $this->idc_number.'.png',
+            'avatars'
+        );
+        $validatedData['photo'] = $path;
 
         $saved = IdCard::query()->create($validatedData);
         if ($saved) {

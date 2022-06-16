@@ -4,12 +4,17 @@ namespace App\Http\Livewire\IdCard;
 
 use App\Models\IdCard;
 use App\View\Components\DefaultLayout;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
+    use WithFileUploads;
 
+    public $photo;
+    public $tempPhoto;
     public $idc_id;
     public $idc_number;
     public $th_title_name;
@@ -48,7 +53,11 @@ class Edit extends Component
         'issue_date.date_format' => 'วันที่ไม่ถูกต้อง',
         'expire_date.required' => 'กรุณากรอก วันบัตรหมดอายุ',
         'expire_date.date_format' => 'วันที่ไม่ถูกต้อง',
+        //        'photo.dimensions' => 'อัตราส่วน 1/1 เท่านั้น',
+        'photo.image' => 'อัปโหลดไฟล์รูปเท่านั้น',
+        'photo.max' => 'ขนาดไฟล์ไม่เกิน 2MB',
     ];
+    public mixed $oldPhoto;
 
     public function mount(IdCard $id)
     {
@@ -68,6 +77,7 @@ class Edit extends Component
         $this->province = $id->province;
         $this->issue_date = $id->issue_date;
         $this->expire_date = $id->expire_date;
+        $this->photo = $id->picture;
 
     }
 
@@ -80,6 +90,7 @@ class Edit extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName, [
+            'photo' => 'required|image|max:2048',
             'idc_number' =>
                 ['required', 'numeric', 'digits_between :13,13',
                     Rule::unique('idcard', 'idc_number')->ignore($this->idc_id)
@@ -108,6 +119,7 @@ class Edit extends Component
                 ['required', 'numeric', 'digits_between :13,13',
                     Rule::unique('idcard', 'idc_number')->ignore($this->idc_id)
                 ],
+            'photo' => 'required|image|max:2048',
             'th_title_name' => 'required',
             'th_first_name' => 'required',
             'th_last_name' => 'required',
@@ -123,6 +135,13 @@ class Edit extends Component
             'issue_date' => 'required|date_format:Y-m-d',
             'expire_date' => 'required|date_format:Y-m-d',
         ]);
+
+        $path = $this->photo->storeAs(
+            '',
+            $this->idc_number.'.png',
+            'avatars'
+        );
+        $validatedData['photo'] = $path;
 
         $saved = IdCard::query()->where('id',$this->idc_id)->update($validatedData);
         if ($saved) {

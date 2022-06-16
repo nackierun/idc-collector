@@ -16,11 +16,52 @@
                             @csrf
                             <div>
                                 <div class="row p-3">
+
+                                    <div class="mb-3 col-md-4">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                Preview
+                                            </div>
+                                            <div class="card-body mw-50 mh-50">
+                                                @if ($photo)
+                                                    @if(!is_string($photo))
+                                                        <img src="{!! $photo->temporaryUrl() !!}" alt="photo"
+                                                             class="card-img-top">
+                                                    @else
+                                                        <img src="data:image/png;base64,{!! $photo !!}" alt="photo"
+                                                             class="card-img-top">
+
+                                                    @endif
+                                                @else
+                                                    <img
+                                                        src="{!! asset('avatar/blank-profile-picture-973460_640.png') !!}"
+                                                        alt="photo" class="card-img-top">
+
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mb-3 col-md-9">
+                                        <label for="photo" class="form-label">
+                                            Photo
+                                        </label>
+                                        <input wire:model="photo" id="photo" name="photo" type="file"
+                                               accept=".jpg, .jpeg, .png" value=""
+                                               class="form-control @error('photo') is-invalid @enderror"
+                                               placeholder="" required>
+                                        @error('photo')
+                                        <div class="invalid-feedback">{{ $message }}</div> @enderror
+
+                                    </div>
+
                                     <div class="mb-3 col-md-12">
                                         <label for="idc_number" class="form-label">
                                             Identification Number/เลขบัตรประจำตัวประชาชน 13 หลัก
                                         </label>
-                                        <input wire:model="idc_number" id="idc_number" name="idc_number" type="text" value=""
+                                        <input wire:model="idc_number" id="idc_number" name="idc_number" type="text"
+                                               value=""
                                                class="form-control @error('idc_number') is-invalid @enderror"
                                                placeholder="" required>
                                         @error('idc_number')

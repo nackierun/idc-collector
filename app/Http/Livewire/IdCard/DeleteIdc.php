@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\IdCard;
 
 use App\Models\IdCard;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class DeleteIdc extends Component
@@ -12,6 +13,7 @@ class DeleteIdc extends Component
 
     public function delete()
     {
+        Storage::disk('avatars')->delete($this->idc->photo);
         $delete = $this->idc->delete();
         $this->dispatchBrowserEvent('deleted');
 

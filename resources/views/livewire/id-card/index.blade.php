@@ -26,6 +26,7 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">Avatar</th>
                             <th scope="col">Identification Number</th>
                             <th scope="col">ชื่อ</th>
                             <th scope="col">name</th>
@@ -44,6 +45,9 @@
                         @foreach($idcard as $item)
                             <tr>
                                 <th scope="row">{!! $i++ !!}</th>
+                                <th class="w-20 h-20">
+                                    <img src="{{ !empty($item->picture)? "data:image/png;base64,".$item->picture : asset('avatar/blank-profile-picture-973460_640.png')}}" alt="photo" class="card-img-top">
+                                </th>
                                 <td>{!! $item->idc_number !!}</td>
                                 <td>{!! $item->th_full_name !!}</td>
                                 <td>{!! $item->en_full_name !!}</td>
